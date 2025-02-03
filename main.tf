@@ -4,7 +4,8 @@ provider "aws" {
 
 resource "aws_instance" "example" {
   ami                    = "ami-09e143e99e8fa74f9" # AMI ID
-  instance_type          = "t2.large"              # Instance type
+  #instance_type          = "t2.large"              # Instance type
+  instance_type          = "g4dn.xlarge"
   subnet_id              = "subnet-21f5a867"       # Subnet ID
   iam_instance_profile   = "AmazonSSMManagedInstanceCore"          # IAM instance profile role name
   vpc_security_group_ids = ["sg-1e3e347c"]         # Security group ID
@@ -34,6 +35,8 @@ resource "aws_instance" "example" {
               systemctl enable ollama
 
               # Optional: Verify the service is running
+              export HOME="/root"
+              sleep 5
               systemctl status ollama
               for i in {1..10}
               do
