@@ -2,13 +2,12 @@ provider "aws" {
   region = "ap-southeast-2"
 }
 
-resource "aws_instance" "example" {
-  ami                    = "ami-09e143e99e8fa74f9" # AMI ID
-  #instance_type          = "t2.large"              # Instance type
-  instance_type          = "g4dn.xlarge"
-  subnet_id              = "subnet-21f5a867"       # Subnet ID
-  iam_instance_profile   = "AmazonSSMManagedInstanceCore"          # IAM instance profile role name
-  vpc_security_group_ids = ["sg-1e3e347c"]         # Security group ID
+resource "aws_instance" "this" {
+  ami                    = var.ami                        # AMI ID
+  instance_type          = var.instance_type              # Instance type
+  subnet_id              = var.subnet_id                  # Subnet ID
+  iam_instance_profile   = "AmazonSSMManagedInstanceCore" # IAM instance profile role name
+  vpc_security_group_ids = var.vpc_security_group_ids     # Security group IDs
 
   root_block_device {
     volume_size = 20    # Root volume size in GB
@@ -48,4 +47,9 @@ resource "aws_instance" "example" {
   tags = {
     Name = "deepseek-r1"
   }
+}
+
+output "instance_public_ip" {
+  description = "The public IP address of the EC2 instance"
+  value       = aws_instance.this.public_ip
 }
